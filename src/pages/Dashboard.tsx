@@ -16,9 +16,13 @@ import {
   Plus
 } from "lucide-react";
 import { Reminder } from "../types";
+import { useLanguage } from "../context/LanguageContext.tsx";
+import { useAuth } from "../context/AuthContext.tsx";
 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
+  const { user, openSignInModal } = useAuth();
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [loadingReminders, setLoadingReminders] = useState(true);
 
@@ -80,46 +84,45 @@ export const Dashboard: React.FC = () => {
     localStorage.setItem("imd_water", updated.toString());
   };
 
-  // Dynamic greeting based on current time
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Good morning!";
-    if (hour < 18) return "Good afternoon!";
-    return "Good evening!";
+    if (hour < 12) return t("goodMorning");
+    if (hour < 18) return t("goodAfternoon");
+    return t("goodEvening");
   };
 
   const featureCards = [
     {
-      title: "AI Health Assistant",
-      description: "Understand health information.",
+      title: t("card1Title"),
+      description: t("card1Desc"),
       icon: MessageSquareHeart,
       to: "/assistant",
       accent: "text-[#2583F5] bg-blue-50 border-blue-100",
-      btnText: "Start Chat"
+      btnText: t("card1Btn"),
     },
     {
-      title: "Symptom Guidance",
-      description: "Explore appropriate next steps.",
+      title: t("card2Title"),
+      description: t("card2Desc"),
       icon: Activity,
       to: "/symptoms",
       accent: "text-emerald-600 bg-emerald-50 border-emerald-100",
-      btnText: "Check Symptoms"
+      btnText: t("card2Btn"),
     },
     {
-      title: "Medical Reports",
-      description: "Understand your lab results.",
+      title: t("card3Title"),
+      description: t("card3Desc"),
       icon: FileSpreadsheet,
       to: "/reports",
       accent: "text-indigo-600 bg-indigo-50 border-indigo-100",
-      btnText: "Analyze Report"
+      btnText: t("card3Btn"),
     },
     {
-      title: "Preventive Healthcare",
-      description: "Track wellness and reminders.",
+      title: t("card4Title"),
+      description: t("card4Desc"),
       icon: HeartPulse,
       to: "/preventive",
       accent: "text-[#16B8A6] bg-teal-50 border-teal-100",
-      btnText: "View Wellness"
+      btnText: t("card4Btn"),
     },
   ];
 
@@ -131,25 +134,40 @@ export const Dashboard: React.FC = () => {
           <div className="flex items-center gap-2 mb-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
-              Platform Ready
+              {t("platformReady")}
             </span>
+            {user && !user.isGuest && (
+              <span className="text-xs font-bold text-[#2583F5] bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                {user.name}
+              </span>
+            )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#172B4D] tracking-tight">
-            {getGreeting()}
+            {getGreeting()} {user && !user.isGuest ? `, ${user.name}` : ""}
           </h1>
           <p className="text-[#718096] text-sm sm:text-base mt-1 max-w-xl">
-            How can we help you today? Explore verified guidance, simplify laboratory results, and monitor your daily preventive goals.
+            {t("howCanWeHelp")}
           </p>
         </div>
 
-        <button
-          onClick={() => navigate("/assistant")}
-          className="flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-[#2583F5] hover:bg-[#1b6dd4] text-white font-semibold text-sm shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5 self-start md:self-auto cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-        >
-          <Sparkles className="w-4 h-4" />
-          <span>Ask AI Assistant</span>
-          <ArrowRight className="w-4 h-4 ml-1" />
-        </button>
+        <div className="flex items-center gap-3">
+          {user.isGuest && (
+            <button
+              onClick={openSignInModal}
+              className="px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold shadow-xs transition-colors cursor-pointer"
+            >
+              {t("signIn")}
+            </button>
+          )}
+          <button
+            onClick={() => navigate("/assistant")}
+            className="flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-[#2583F5] hover:bg-[#1b6dd4] text-white font-semibold text-sm shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5 self-start md:self-auto cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>{t("askAiAssistant")}</span>
+            <ArrowRight className="w-4 h-4 ml-1" />
+          </button>
+        </div>
       </div>
 
       {/* Main 4 Feature Cards */}
@@ -211,13 +229,13 @@ export const Dashboard: React.FC = () => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[#2583F5]" />
-                <h3 className="text-sm font-bold text-[#172B4D]">Upcoming Reminders</h3>
+                <h3 className="text-sm font-bold text-[#172B4D]">{t("upcomingReminders")}</h3>
               </div>
               <button
                 onClick={() => navigate("/preventive")}
                 className="text-xs font-semibold text-[#2583F5] hover:underline cursor-pointer"
               >
-                Manage All
+                {t("manageAll")}
               </button>
             </div>
 
@@ -228,12 +246,12 @@ export const Dashboard: React.FC = () => {
               </div>
             ) : reminders.length === 0 ? (
               <div className="text-center py-8 text-xs text-[#718096] bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                <p>No reminders scheduled for today.</p>
+                <p>{t("noRemindersToday")}</p>
                 <button
                   onClick={() => navigate("/preventive")}
-                  className="mt-2 text-[#2583F5] font-semibold hover:underline"
+                  className="mt-2 text-[#2583F5] font-semibold hover:underline cursor-pointer"
                 >
-                  + Add your first reminder
+                  + {t("addReminder")}
                 </button>
               </div>
             ) : (
@@ -287,7 +305,7 @@ export const Dashboard: React.FC = () => {
               className="text-[#2583F5] font-semibold hover:underline inline-flex items-center gap-1 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span>Add Reminder</span>
+              <span>{t("addReminder")}</span>
             </button>
           </div>
         </div>
@@ -298,10 +316,10 @@ export const Dashboard: React.FC = () => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <HeartPulse className="w-4 h-4 text-[#16B8A6]" />
-                <h3 className="text-sm font-bold text-[#172B4D]">Wellness Summary</h3>
+                <h3 className="text-sm font-bold text-[#172B4D]">{t("wellnessSummary")}</h3>
               </div>
               <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-blue-50 text-[#2583F5] border border-blue-100">
-                Synthetic Demo
+                {t("syntheticDemo")}
               </span>
             </div>
 
@@ -312,7 +330,7 @@ export const Dashboard: React.FC = () => {
                 <div className="flex justify-between items-center text-xs mb-1">
                   <span className="flex items-center gap-1.5 font-medium text-[#172B4D]">
                     <Droplets className="w-3.5 h-3.5 text-blue-500" />
-                    Hydration
+                    {t("hydration")}
                   </span>
                   <span className="text-[#718096] font-semibold">
                     {waterMl} / 2500 ml
@@ -345,7 +363,7 @@ export const Dashboard: React.FC = () => {
                 <div className="flex justify-between items-center text-xs mb-1">
                   <span className="flex items-center gap-1.5 font-medium text-[#172B4D]">
                     <Moon className="w-3.5 h-3.5 text-indigo-500" />
-                    Sleep Duration
+                    {t("sleepDuration")}
                   </span>
                   <span className="text-[#718096] font-semibold">
                     {sleepHours} hrs (Goal: 8.0)
@@ -364,7 +382,7 @@ export const Dashboard: React.FC = () => {
                 <div className="flex justify-between items-center text-xs mb-1">
                   <span className="flex items-center gap-1.5 font-medium text-[#172B4D]">
                     <Footprints className="w-3.5 h-3.5 text-emerald-500" />
-                    Daily Movement
+                    {t("dailyMovement")}
                   </span>
                   <span className="text-[#718096] font-semibold">
                     {activityMinutes} / 45 mins
@@ -381,12 +399,12 @@ export const Dashboard: React.FC = () => {
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-            <span className="text-[#718096]">Demonstration wellness tracking.</span>
+            <span className="text-[#718096]">{t("tagline")}</span>
             <button
               onClick={() => navigate("/preventive")}
               className="text-[#16B8A6] font-semibold hover:underline cursor-pointer"
             >
-              Open Tracker &rarr;
+              {t("openTracker")} &rarr;
             </button>
           </div>
         </div>

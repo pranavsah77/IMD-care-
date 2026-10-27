@@ -8,35 +8,38 @@ import {
   User,
   ShieldCheck,
   RefreshCw,
-  Info
+  Info,
+  Globe
 } from "lucide-react";
 import { ChatMessage } from "../types";
-
-const SUGGESTED_QUESTIONS = [
-  "What does blood pressure mean?",
-  "Explain dehydration in simple words.",
-  "What are common causes of a headache?",
-  "How can I improve my sleep?",
-];
-
-const INITIAL_MESSAGES: ChatMessage[] = [
-  {
-    id: "welcome-1",
-    role: "assistant",
-    content:
-      "Hello! I'm your IMD Care AI Health Assistant. I can help explain medical terms, anatomy, general health questions, and wellness habits in clear, simple language.\n\n*Please note: I cannot diagnose conditions or prescribe medications. If you have an emergency, please call 911 or your local emergency number immediately.*",
-    timestamp: "Just now",
-    disclaimer: "IMD Care provides general health information and does not replace a qualified healthcare professional."
-  },
-];
+import { useLanguage } from "../context/LanguageContext.tsx";
 
 export const HealthAssistant: React.FC = () => {
-  const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
+  const { language, t } = useLanguage();
+
+  const getInitialMessage = (): ChatMessage => ({
+    id: "welcome-1",
+    role: "assistant",
+    content: t("aiIntro"),
+    timestamp: "Just now",
+    disclaimer: t("disclaimerText")
+  });
+
+  const [messages, setMessages] = useState<ChatMessage[]>([getInitialMessage()]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const suggestedQuestions = [t("q1"), t("q2"), t("q3"), t("q4")];
+
+  // Update initial welcome message when language changes if no conversation started
+  useEffect(() => {
+    if (messages.length === 1 && messages[0].id === "welcome-1") {
+      setMessages([getInitialMessage()]);
+    }
+  }, [language]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -65,7 +68,6 @@ export const HealthAssistant: React.FC = () => {
     setLoading(true);
 
     try {
-      // Build conversation history for the backend
       const historyPayload = updatedMessages.map((m) => ({
         role: m.role,
         content: m.content,
@@ -77,6 +79,7 @@ export const HealthAssistant: React.FC = () => {
         body: JSON.stringify({
           message: messageContent,
           conversationHistory: historyPayload,
+          language,
         }),
       });
 
@@ -107,7 +110,7 @@ export const HealthAssistant: React.FC = () => {
 
   const handleClearChat = () => {
     if (messages.length > 1 && window.confirm("Are you sure you want to clear the conversation?")) {
-      setMessages(INITIAL_MESSAGES);
+      setMessages([getInitialMessage()]);
       setErrorMessage(null);
     }
   };
@@ -122,13 +125,17 @@ export const HealthAssistant: React.FC = () => {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-bold text-[#172B4D]">AI Health Assistant</h1>
+              <h1 className="text-base font-bold text-[#172B4D]">{t("assistant")}</h1>
               <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-teal-50 text-teal-700 border border-teal-200">
-                Educational AI
+                {language === "hi" ? "हिंदी एआई" : language === "mr" ? "मराठी एआई" : "Educational AI"}
               </span>
             </div>
             <p className="text-xs text-[#718096]">
-              Ask questions about terminology, symptoms, and daily wellness
+              {language === "hi"
+                ? "शब्दावली, लक्षण और दैनिक स्वास्थ्य के बारे में हिंदी में पूछें"
+                : language === "mr"
+                ? "वैद्यकीय संज्ञा, लक्षणे आणि दैनंदिन आरोग्याविषयी मराठीत विचारा"
+                : "Ask questions about terminology, symptoms, and daily wellness"}
             </p>
           </div>
         </div>
@@ -139,7 +146,7 @@ export const HealthAssistant: React.FC = () => {
           title="Clear all chat messages"
         >
           <Trash2 className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Clear Chat</span>
+          <span className="hidden sm:inline">{t("clearChat")}</span>
         </button>
       </div>
 
@@ -178,7 +185,7 @@ export const HealthAssistant: React.FC = () => {
               {msg.isEmergency && (
                 <div className="flex items-center gap-1.5 text-rose-700 font-bold mb-2 pb-1.5 border-b border-rose-200">
                   <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-                  <span>Immediate Medical Notice</span>
+                  <span>Immediate Medical Notice / आपातकालीन सूचना</span>
                 </div>
               )}
 
@@ -207,7 +214,7 @@ export const HealthAssistant: React.FC = () => {
             <div className="bg-white border border-[#E5EDF5] rounded-2xl rounded-tl-xs p-4 shadow-xs">
               <div className="flex items-center gap-2 text-xs text-[#718096]">
                 <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#2583F5]" />
-                <span>Thinking and analyzing health information...</span>
+                <span>{t("thinking")}</span>
               </div>
             </div>
           </div>
@@ -221,7 +228,7 @@ export const HealthAssistant: React.FC = () => {
             </div>
             <button
               onClick={() => handleSendMessage()}
-              className="text-xs font-bold underline hover:text-rose-800 ml-3"
+              className="text-xs font-bold underline hover:text-rose-800 ml-3 cursor-pointer"
             >
               Retry
             </button>
@@ -235,12 +242,12 @@ export const HealthAssistant: React.FC = () => {
       <div className="bg-white px-4 py-2 border-x border-[#E5EDF5]">
         <div className="flex items-center gap-1.5 mb-1 text-[11px] font-semibold text-[#718096]">
           <Sparkles className="w-3 h-3 text-[#2583F5]" />
-          <span>Suggested Questions:</span>
+          <span>{t("suggestedQuestions")}</span>
         </div>
         <div className="flex flex-wrap gap-1.5">
-          {SUGGESTED_QUESTIONS.map((q) => (
+          {suggestedQuestions.map((q, idx) => (
             <button
-              key={q}
+              key={idx}
               onClick={() => handleSendMessage(q)}
               disabled={loading}
               className="text-xs px-2.5 py-1 rounded-lg bg-[#F6FAFE] hover:bg-blue-50 text-[#172B4D] hover:text-[#2583F5] border border-[#E5EDF5] transition-all cursor-pointer disabled:opacity-50"
@@ -265,7 +272,7 @@ export const HealthAssistant: React.FC = () => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask a health question (e.g. 'What is the purpose of a lipid panel?')..."
+            placeholder={t("askPlaceholder")}
             disabled={loading}
             className="flex-1 px-4 py-2.5 text-xs sm:text-sm bg-slate-50 border border-[#E5EDF5] rounded-xl focus:outline-hidden focus:ring-2 focus:ring-[#2583F5] focus:bg-white text-[#172B4D] placeholder-slate-400 transition-all"
           />
@@ -276,13 +283,13 @@ export const HealthAssistant: React.FC = () => {
             className="px-4 py-2.5 bg-[#2583F5] hover:bg-[#1b6dd4] disabled:bg-slate-200 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-all shadow-xs disabled:cursor-not-allowed cursor-pointer"
           >
             <Send className="w-4 h-4" />
-            <span className="hidden sm:inline">Send</span>
+            <span className="hidden sm:inline">{t("send")}</span>
           </button>
         </form>
 
         <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#718096] text-center pt-1">
-          <Info className="w-3 h-3 text-slate-400" />
-          <span>IMD Care provides general health information and does not replace a qualified healthcare professional.</span>
+          <Info className="w-3 h-3 text-slate-400 flex-shrink-0" />
+          <span>{t("disclaimerText")}</span>
         </div>
       </div>
     </div>

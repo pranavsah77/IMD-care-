@@ -7,6 +7,7 @@ import { symptomGuidanceRouter } from "./server/routes/symptomGuidance.ts";
 import { reportSimplifierRouter } from "./server/routes/reportSimplifier.ts";
 import { remindersRouter } from "./server/routes/reminders.ts";
 import { wellnessTipsRouter } from "./server/routes/wellnessTips.ts";
+import { diagnosticsRouter } from "./server/routes/diagnostics.ts";
 
 dotenv.config();
 
@@ -44,6 +45,7 @@ app.use("/api/symptom-guidance", symptomGuidanceRouter);
 app.use("/api/report-simplifier", reportSimplifierRouter);
 app.use("/api/reminders", remindersRouter);
 app.use("/api/wellness-tips", wellnessTipsRouter);
+app.use("/api/diagnostics", diagnosticsRouter);
 
 // Global Error Handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

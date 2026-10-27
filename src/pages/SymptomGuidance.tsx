@@ -14,47 +14,130 @@ import {
   PhoneCall
 } from "lucide-react";
 import { SymptomScenario } from "../types";
-
-const DEMO_SCENARIOS: SymptomScenario[] = [
-  {
-    name: "Tension Headache (Mild)",
-    ageGroup: "Adult (18-64)",
-    mainSymptom: "Dull aching forehead headache and eye fatigue after screen work",
-    duration: "1-3 days",
-    severity: "Mild (manageable at home)",
-    additionalDetails: "No fever, no vision blur, feels like a tight band around head.",
-    isEmergencyDemo: false,
-  },
-  {
-    name: "Seasonal Allergies (Moderate)",
-    ageGroup: "Adolescent (12-17)",
-    mainSymptom: "Sneezing, watery itchy eyes, and mild clear runny nose",
-    duration: "4-7 days",
-    severity: "Moderate (disrupting routine)",
-    additionalDetails: "Occurs mostly outdoors during pollen season; no difficulty breathing.",
-    isEmergencyDemo: false,
-  },
-  {
-    name: "Dehydration After Exercise (Mild)",
-    ageGroup: "Adult (18-64)",
-    mainSymptom: "Dry mouth, mild lightheadedness upon standing, dark yellow urine",
-    duration: "Under 24 hours",
-    severity: "Mild (manageable at home)",
-    additionalDetails: "Exercised for 90 minutes in warm weather without sufficient water.",
-    isEmergencyDemo: false,
-  },
-  {
-    name: "CRITICAL: Crushing Chest Pain (Emergency Test)",
-    ageGroup: "Adult (18-64)",
-    mainSymptom: "Sudden crushing chest pain radiating to left arm and cold sweat",
-    duration: "Under 24 hours",
-    severity: "Critical / Emergency",
-    additionalDetails: "Pressure feels like an elephant sitting on chest; accompanied by severe shortness of breath.",
-    isEmergencyDemo: true,
-  },
-];
+import { useLanguage } from "../context/LanguageContext.tsx";
 
 export const SymptomGuidance: React.FC = () => {
+  const { language, t } = useLanguage();
+
+  const scenariosByLang: Record<string, SymptomScenario[]> = {
+    en: [
+      {
+        name: "Tension Headache (Mild)",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "Dull aching forehead headache and eye fatigue after screen work",
+        duration: "1-3 days",
+        severity: "Mild (manageable at home)",
+        additionalDetails: "No fever, no vision blur, feels like a tight band around head.",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "Seasonal Allergies (Moderate)",
+        ageGroup: "Adolescent (12-17)",
+        mainSymptom: "Sneezing, watery itchy eyes, and mild clear runny nose",
+        duration: "4-7 days",
+        severity: "Moderate (disrupting routine)",
+        additionalDetails: "Occurs mostly outdoors during pollen season; no difficulty breathing.",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "Dehydration (Mild)",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "Dry mouth, mild lightheadedness upon standing, dark yellow urine",
+        duration: "Under 24 hours",
+        severity: "Mild (manageable at home)",
+        additionalDetails: "Exercised for 90 minutes in warm weather without sufficient water.",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "CRITICAL: Chest Pain (Emergency Test)",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "Sudden crushing chest pain radiating to left arm and cold sweat",
+        duration: "Under 24 hours",
+        severity: "Critical / Emergency",
+        additionalDetails: "Pressure feels like an elephant sitting on chest; accompanied by severe shortness of breath.",
+        isEmergencyDemo: true,
+      },
+    ],
+    hi: [
+      {
+        name: "तनाव सिरदर्द (हल्का)",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "स्क्रीन पर काम के बाद माथे में हल्का दर्द और आंखों में खिंचाव",
+        duration: "1-3 days",
+        severity: "Mild (manageable at home)",
+        additionalDetails: "बुखार नहीं है, आंखों में धुंधलापन नहीं है।",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "मौसमी एलर्जी (मध्यम)",
+        ageGroup: "Adolescent (12-17)",
+        mainSymptom: "छींक आना, आंखों में खुजली और पानी, हल्का जुकाम",
+        duration: "4-7 days",
+        severity: "Moderate (disrupting routine)",
+        additionalDetails: "धूल या परागकणों के संपर्क में आने पर बढ़ता है।",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "पानी की कमी / डिहाइड्रेशन (हल्का)",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "मुंह सूखना, उठने पर हल्का चक्कर आना, गहरा पीला मूत्र",
+        duration: "Under 24 hours",
+        severity: "Mild (manageable at home)",
+        additionalDetails: "धूप में शारीरिक कार्य के बाद पानी कम पिया।",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "आपातकालीन टेस्ट: छाती में तेज दर्द",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "छाती में अचानक तेज दबाव जो बाएं हाथ में फैल रहा है और सांस फूल रही है",
+        duration: "Under 24 hours",
+        severity: "Critical / Emergency",
+        additionalDetails: "पसीना आ रहा है और अत्यधिक बेचैनी है।",
+        isEmergencyDemo: true,
+      },
+    ],
+    mr: [
+      {
+        name: "डोकेदुखी व ताण (सौम्य)",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "स्क्रीन पाहिल्यावर कपाळात होणारी मंद डोकेदुखी आणि डोळ्यांवर ताण",
+        duration: "1-3 days",
+        severity: "Mild (manageable at home)",
+        additionalDetails: "ताप नाही, डोळ्यांना अंधारी नाही.",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "हंगामी ऍलर्जी (मध्यम)",
+        ageGroup: "Adolescent (12-17)",
+        mainSymptom: "शिंका येणे, डोळे चुरचुरणे आणि नाक वाहणे",
+        duration: "4-7 days",
+        severity: "Moderate (disrupting routine)",
+        additionalDetails: "धूळ किंवा परागकण संपर्कात आल्यावर त्रास वाढतो.",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "पाण्याची कमतरता (सौम्य)",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "तोंड सुकणे, उभे राहिल्यावर हलकी गरगर आणि गडद लघवी",
+        duration: "Under 24 hours",
+        severity: "Mild (manageable at home)",
+        additionalDetails: "उन्हात फिरल्यामुळे पुरेसे पाणी पिणे झाले नाही.",
+        isEmergencyDemo: false,
+      },
+      {
+        name: "आपत्कालीन टेस्ट: छातीत असह्य वेदना",
+        ageGroup: "Adult (18-64)",
+        mainSymptom: "छातीत अचानक प्रचंड दाब, डाव्या हाताकडे जाणारी कळ आणि धाप लागणे",
+        duration: "Under 24 hours",
+        severity: "Critical / Emergency",
+        additionalDetails: "थंड घाम येत आहे आणि श्वास घेण्यास अडचण.",
+        isEmergencyDemo: true,
+      },
+    ],
+  };
+
+  const currentScenarios = scenariosByLang[language] || scenariosByLang.en;
+
   const [ageGroup, setAgeGroup] = useState("Adult (18-64)");
   const [mainSymptom, setMainSymptom] = useState("");
   const [duration, setDuration] = useState("1-3 days");
@@ -104,6 +187,7 @@ export const SymptomGuidance: React.FC = () => {
           duration,
           severity,
           additionalDetails: additionalDetails.trim(),
+          language,
         }),
       });
 
@@ -129,10 +213,10 @@ export const SymptomGuidance: React.FC = () => {
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
               <Activity className="w-4 h-4 stroke-[2.2]" />
             </div>
-            <h1 className="text-xl font-bold text-[#172B4D]">Smart Symptom Guidance</h1>
+            <h1 className="text-xl font-bold text-[#172B4D]">{t("symptomTitle")}</h1>
           </div>
           <p className="text-xs text-[#718096]">
-            Structured educational health insights and red-flag evaluations. This tool does not provide diagnoses.
+            {t("symptomSubtitle")}
           </p>
         </div>
 
@@ -147,13 +231,15 @@ export const SymptomGuidance: React.FC = () => {
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-1.5 text-xs font-bold text-[#172B4D]">
             <Sparkles className="w-3.5 h-3.5 text-[#2583F5]" />
-            <span>Try Synthetic Demo Scenarios (One-Click):</span>
+            <span>{t("tryPresets")}</span>
           </div>
-          <span className="text-[10px] text-[#718096] uppercase font-semibold">Hackathon Presets</span>
+          <span className="text-[10px] text-[#718096] uppercase font-semibold">
+            {language === "hi" ? "हिंदी परिदृश्य" : language === "mr" ? "मराठी परिस्थिती" : "Hackathon Presets"}
+          </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-          {DEMO_SCENARIOS.map((sc) => (
+          {currentScenarios.map((sc) => (
             <button
               key={sc.name}
               onClick={() => handleSelectScenario(sc)}
@@ -176,7 +262,7 @@ export const SymptomGuidance: React.FC = () => {
       {/* Interactive Form */}
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-6 border border-[#E5EDF5] shadow-xs space-y-4">
         <h2 className="text-sm font-bold text-[#172B4D] border-b border-slate-100 pb-2">
-          Symptom Intake Assessment
+          {t("symptomTitle")}
         </h2>
 
         {validationError && (
@@ -190,52 +276,52 @@ export const SymptomGuidance: React.FC = () => {
           {/* Age Group */}
           <div>
             <label className="block text-xs font-semibold text-[#172B4D] mb-1">
-              Age Group *
+              {t("ageGroup")} *
             </label>
             <select
               value={ageGroup}
               onChange={(e) => setAgeGroup(e.target.value)}
               className="w-full text-xs px-3 py-2 bg-slate-50 border border-[#E5EDF5] rounded-xl focus:ring-2 focus:ring-[#2583F5] focus:bg-white text-[#172B4D]"
             >
-              <option value="Infant / Child (0-11)">Infant / Child (0-11)</option>
-              <option value="Adolescent (12-17)">Adolescent (12-17)</option>
-              <option value="Adult (18-64)">Adult (18-64)</option>
-              <option value="Older Adult (65+)">Older Adult (65+)</option>
+              <option value="Infant / Child (0-11)">Infant / Child (0-11) / बाळ व लहान मूल</option>
+              <option value="Adolescent (12-17)">Adolescent (12-17) / किशोरवयीन</option>
+              <option value="Adult (18-64)">Adult (18-64) / प्रौढ (वय १८-६४)</option>
+              <option value="Older Adult (65+)">Older Adult (65+) / ज्येष्ठ नागरिक (६५+)</option>
             </select>
           </div>
 
           {/* Duration */}
           <div>
             <label className="block text-xs font-semibold text-[#172B4D] mb-1">
-              Duration of Symptoms *
+              {t("duration")} *
             </label>
             <select
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
               className="w-full text-xs px-3 py-2 bg-slate-50 border border-[#E5EDF5] rounded-xl focus:ring-2 focus:ring-[#2583F5] focus:bg-white text-[#172B4D]"
             >
-              <option value="Under 24 hours">Under 24 hours</option>
-              <option value="1-3 days">1-3 days</option>
-              <option value="4-7 days">4-7 days</option>
-              <option value="1-2 weeks">1-2 weeks</option>
-              <option value="Over 2 weeks">Over 2 weeks</option>
+              <option value="Under 24 hours">Under 24 hours / २४ तासांपेक्षा कमी</option>
+              <option value="1-3 days">1-3 days / १ ते ३ दिवस</option>
+              <option value="4-7 days">4-7 days / ४ ते ७ दिवस</option>
+              <option value="1-2 weeks">1-2 weeks / १ ते २ आठवडे</option>
+              <option value="Over 2 weeks">Over 2 weeks / २ आठवड्यांपेक्षा जास्त</option>
             </select>
           </div>
 
           {/* Severity */}
           <div>
             <label className="block text-xs font-semibold text-[#172B4D] mb-1">
-              Perceived Severity *
+              {t("severity")} *
             </label>
             <select
               value={severity}
               onChange={(e) => setSeverity(e.target.value)}
               className="w-full text-xs px-3 py-2 bg-slate-50 border border-[#E5EDF5] rounded-xl focus:ring-2 focus:ring-[#2583F5] focus:bg-white text-[#172B4D]"
             >
-              <option value="Mild (manageable at home)">Mild (manageable at home)</option>
-              <option value="Moderate (disrupting routine)">Moderate (disrupting routine)</option>
-              <option value="Severe (unbearable discomfort)">Severe (unbearable discomfort)</option>
-              <option value="Critical / Emergency">Critical / Emergency</option>
+              <option value="Mild (manageable at home)">Mild / सौम्य (घरी सांभाळता येण्याजोगे)</option>
+              <option value="Moderate (disrupting routine)">Moderate / मध्यम (रोजच्या कामात व्यत्यय)</option>
+              <option value="Severe (unbearable discomfort)">Severe / तीव्र (असह्य वेदना)</option>
+              <option value="Critical / Emergency">Critical / Emergency / अतिगंभीर (तातडीची मदत)</option>
             </select>
           </div>
         </div>
@@ -243,13 +329,19 @@ export const SymptomGuidance: React.FC = () => {
         {/* Main Symptom */}
         <div>
           <label className="block text-xs font-semibold text-[#172B4D] mb-1">
-            Primary Symptom / Description *
+            {t("mainSymptom")} *
           </label>
           <input
             type="text"
             value={mainSymptom}
             onChange={(e) => setMainSymptom(e.target.value)}
-            placeholder="e.g., Dull throbbing headache on forehead, or mild sore throat when swallowing"
+            placeholder={
+              language === "hi"
+                ? "उदा: माथे पर हल्का दबाव और दर्द, या गले में खराश"
+                : language === "mr"
+                ? "उदा: कपाळात होणारी डोकेदुखी, किंवा घसा दुखणे"
+                : "e.g., Dull throbbing headache on forehead, or mild sore throat when swallowing"
+            }
             className="w-full text-xs sm:text-sm px-3.5 py-2.5 bg-slate-50 border border-[#E5EDF5] rounded-xl focus:ring-2 focus:ring-[#2583F5] focus:bg-white text-[#172B4D]"
           />
         </div>
@@ -257,13 +349,19 @@ export const SymptomGuidance: React.FC = () => {
         {/* Additional Details */}
         <div>
           <label className="block text-xs font-semibold text-[#172B4D] mb-1">
-            Additional Details & Context (Optional)
+            {t("additionalDetails")}
           </label>
           <textarea
             rows={2}
             value={additionalDetails}
             onChange={(e) => setAdditionalDetails(e.target.value)}
-            placeholder="Mention any related factors (e.g., recent exercise, lack of sleep, known allergies, no fever)"
+            placeholder={
+              language === "hi"
+                ? "अतिरिक्त माहिती: स्क्रीन पर काम, नींद की कमी, बुखार नहीं है..."
+                : language === "mr"
+                ? "अतिरिक्त माहिती: कॉम्प्युटरवर काम, झोप कमी झाली, ताप नाही..."
+                : "Mention any related factors (e.g., recent exercise, lack of sleep, known allergies, no fever)"
+            }
             className="w-full text-xs sm:text-sm px-3.5 py-2 bg-slate-50 border border-[#E5EDF5] rounded-xl focus:ring-2 focus:ring-[#2583F5] focus:bg-white text-[#172B4D]"
           />
         </div>
@@ -276,7 +374,7 @@ export const SymptomGuidance: React.FC = () => {
             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Clear Form</span>
+            <span>{t("clearForm")}</span>
           </button>
 
           <button
@@ -287,12 +385,12 @@ export const SymptomGuidance: React.FC = () => {
             {loading ? (
               <>
                 <Clock className="w-4 h-4 animate-spin" />
-                <span>Evaluating Symptoms...</span>
+                <span>{t("evaluating")}</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                <span>Get Guidance</span>
+                <span>{t("getGuidance")}</span>
               </>
             )}
           </button>
@@ -311,10 +409,14 @@ export const SymptomGuidance: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-rose-900">
-                    High Priority Warning: Urgent Medical Attention Recommended
+                    {language === "hi"
+                      ? "उच्च प्राथमिकता चेतावनी: तत्काल चिकित्सीय देखभाल की आवश्यकता"
+                      : language === "mr"
+                      ? "अति तातडीची चेतावणी: त्वरित वैद्यकीय मदत आवश्यक"
+                      : "High Priority Warning: Urgent Medical Attention Recommended"}
                   </h3>
                   <p className="text-xs text-rose-700">
-                    Deterministic red-flag check triggered. Guidance evaluated immediately without delay.
+                    Deterministic red-flag check triggered. Evaluated immediately without delay.
                   </p>
                 </div>
               </div>
@@ -325,16 +427,27 @@ export const SymptomGuidance: React.FC = () => {
 
               <div className="bg-white/80 p-3.5 rounded-xl border border-rose-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
                 <div>
-                  <p className="font-bold text-rose-900">Emergency Actions:</p>
-                  <p className="text-rose-700">Call 911 (US/Canada) or 112 (EU) or proceed to the nearest emergency department.</p>
+                  <p className="font-bold text-rose-900">Emergency Actions / आपत्कालीन कृती:</p>
+                  <p className="text-rose-700">
+                    Call 112 / 108 (India) or 911 (US/Canada) or proceed to the nearest emergency department right away.
+                  </p>
                 </div>
-                <a
-                  href="tel:911"
-                  className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold flex items-center gap-2 flex-shrink-0 cursor-pointer"
-                >
-                  <PhoneCall className="w-3.5 h-3.5" />
-                  <span>Call 911 Now</span>
-                </a>
+                <div className="flex gap-2">
+                  <a
+                    href="tel:112"
+                    className="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold flex items-center gap-1.5 flex-shrink-0 cursor-pointer"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>Call 112 (India)</span>
+                  </a>
+                  <a
+                    href="tel:911"
+                    className="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold flex items-center gap-1.5 flex-shrink-0 cursor-pointer"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>911</span>
+                  </a>
+                </div>
               </div>
             </div>
           ) : (
@@ -354,7 +467,7 @@ export const SymptomGuidance: React.FC = () => {
               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
                 <HelpCircle className="w-4 h-4 text-[#2583F5]" />
                 <h4 className="text-xs sm:text-sm font-bold text-[#172B4D]">
-                  1. Possible General Explanations
+                  {t("explTitle")}
                 </h4>
               </div>
               <ul className="space-y-2 text-xs text-[#172B4D]">
@@ -372,7 +485,7 @@ export const SymptomGuidance: React.FC = () => {
               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <h4 className="text-xs sm:text-sm font-bold text-[#172B4D]">
-                  2. General Self-Care Information
+                  {t("selfCareTitle")}
                 </h4>
               </div>
               <ul className="space-y-2 text-xs text-[#172B4D]">
@@ -390,7 +503,7 @@ export const SymptomGuidance: React.FC = () => {
               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-100">
                 <Stethoscope className="w-4 h-4 text-indigo-600" />
                 <h4 className="text-xs sm:text-sm font-bold text-[#172B4D]">
-                  3. When to Contact a Healthcare Professional
+                  {t("doctorTitle")}
                 </h4>
               </div>
               <ul className="space-y-2 text-xs text-[#172B4D]">
@@ -408,7 +521,7 @@ export const SymptomGuidance: React.FC = () => {
               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-rose-100">
                 <AlertTriangle className="w-4 h-4 text-rose-600" />
                 <h4 className="text-xs sm:text-sm font-bold text-rose-900">
-                  4. Warning Signs Requiring Urgent / Emergency Care
+                  {t("warningTitle")}
                 </h4>
               </div>
               <ul className="space-y-2 text-xs text-rose-900">

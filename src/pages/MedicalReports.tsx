@@ -15,6 +15,7 @@ import {
   FileCode2
 } from "lucide-react";
 import { ReportAnalysis, LabTestItem } from "../types";
+import { useLanguage } from "../context/LanguageContext.tsx";
 
 const SYNTHETIC_SAMPLE_REPORT = `METROPOLITAN CLINICAL LABORATORY
 PATIENT: DEMO_GUEST_0492 (SYNTHETIC RECORD FOR IDEATHON DEMONSTRATION)
@@ -41,6 +42,7 @@ Total Protein                  7.1        g/dL        6.0 - 8.3            NORMA
 NOTES: Fasting specimen. Mild borderline elevations noted in fasting blood glucose and calculated LDL cholesterol. Correlate clinically with dietary history and cardiovascular risk profile.`;
 
 export const MedicalReports: React.FC = () => {
+  const { t, language } = useLanguage();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileBase64, setFileBase64] = useState<string | null>(null);
   const [reportText, setReportText] = useState("");
@@ -128,6 +130,7 @@ export const MedicalReports: React.FC = () => {
     try {
       const payload: any = {
         isSample: isSampleLoaded,
+        language,
       };
 
       if (fileBase64 && selectedFile) {
@@ -175,10 +178,10 @@ export const MedicalReports: React.FC = () => {
             <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
               <FileSpreadsheet className="w-4 h-4 stroke-[2.2]" />
             </div>
-            <h1 className="text-xl font-bold text-[#172B4D]">Medical Report Simplifier</h1>
+            <h1 className="text-xl font-bold text-[#172B4D]">{t("reportsTitle")}</h1>
           </div>
           <p className="text-xs text-[#718096]">
-            Understand laboratory results, reference ranges, and test definitions in plain English without confusion.
+            {t("reportsSubtitle")}
           </p>
         </div>
 
@@ -187,14 +190,14 @@ export const MedicalReports: React.FC = () => {
           className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition-colors self-start md:self-auto cursor-pointer"
         >
           <Sparkles className="w-4 h-4 text-indigo-600" />
-          <span>Try Sample Report (Synthetic CMP)</span>
+          <span>{t("trySampleBtn")}</span>
         </button>
       </div>
 
       {/* Upload Zone */}
       <div className="bg-white rounded-2xl p-6 border border-[#E5EDF5] shadow-xs space-y-4">
         <h2 className="text-sm font-bold text-[#172B4D] border-b border-slate-100 pb-2">
-          Upload or Inspect Laboratory Document
+          {t("reportsTitle")}
         </h2>
 
         {error && (
@@ -215,7 +218,7 @@ export const MedicalReports: React.FC = () => {
           </div>
 
           <p className="text-sm font-bold text-[#172B4D] mb-1">
-            Drag & drop your lab report here, or browse files
+            {t("dragDrop")}
           </p>
           <p className="text-xs text-[#718096] mb-4">
             Supports PNG, JPEG, WEBP, PDF, and TXT files up to 10MB
@@ -223,7 +226,7 @@ export const MedicalReports: React.FC = () => {
 
           <label className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-700 cursor-pointer shadow-xs transition-colors">
             <FileText className="w-4 h-4 text-[#2583F5]" />
-            <span>Browse Local File</span>
+            <span>{t("browseFile")}</span>
             <input
               type="file"
               accept=".pdf,.png,.jpg,.jpeg,.webp,.txt"
@@ -280,12 +283,12 @@ export const MedicalReports: React.FC = () => {
             {loading ? (
               <>
                 <Clock className="w-4 h-4 animate-spin" />
-                <span>Simplifying Lab Report with Gemini...</span>
+                <span>{t("analyzingReport")}</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                <span>Analyze Report</span>
+                <span>{t("analyzeReport")}</span>
               </>
             )}
           </button>
@@ -301,7 +304,7 @@ export const MedicalReports: React.FC = () => {
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#2583F5]" />
                 <h3 className="text-base font-bold text-[#172B4D]">
-                  1. Report Summary
+                  1. {t("reportSummary")}
                 </h3>
               </div>
               {analysis.isSyntheticSample && (
@@ -320,7 +323,7 @@ export const MedicalReports: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-4 border-b border-slate-100">
               <div>
                 <h3 className="text-base font-bold text-[#172B4D]">
-                  2-5. Measured Tests, Values & Reference Intervals
+                  2-5. {t("measuredTests")}
                 </h3>
                 <p className="text-xs text-[#718096]">
                   What each test measures, reported units, reference ranges, and explicit flags
@@ -425,7 +428,7 @@ export const MedicalReports: React.FC = () => {
             <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-100">
               <HelpCircle className="w-5 h-5 text-emerald-600" />
               <h3 className="text-base font-bold text-[#172B4D]">
-                6. General Explanations of Findings
+                6. {t("generalExpl")}
               </h3>
             </div>
             <ul className="space-y-2 text-xs sm:text-sm text-[#172B4D]">
@@ -443,7 +446,7 @@ export const MedicalReports: React.FC = () => {
             <div className="flex items-center gap-2 pb-3 mb-3 border-b border-slate-100">
               <Stethoscope className="w-5 h-5 text-indigo-600" />
               <h3 className="text-base font-bold text-[#172B4D]">
-                7. Questions to Ask a Healthcare Professional
+                7. {t("questionsForDoctor")}
               </h3>
             </div>
             <p className="text-xs text-[#718096] mb-3">

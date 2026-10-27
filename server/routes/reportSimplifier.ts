@@ -34,7 +34,165 @@ const ALLOWED_MIME_TYPES = [
 
 const MAX_BASE64_SIZE_BYTES = 10 * 1024 * 1024; // 10MB limit
 
-function getSyntheticCmpAnalysis(): ReportSimplifierResponse {
+function getSyntheticCmpAnalysis(lang: string = "en"): ReportSimplifierResponse {
+  if (lang === "hi") {
+    return {
+      summary: "उपवास रक्त के नमूने से व्यापक मेटाबॉलिक पैनल (CMP) और लिपिड पैनल। यह रक्त शर्करा (ग्लूकोज), कोलेस्ट्रॉल, गुर्दे (किडनी) और यकृत (लिवर) के स्वास्थ्य का मूल्यांकन करता है।",
+      tests: [
+        {
+          testName: "Fasting Blood Glucose (फास्टिंग ब्लड ग्लूकोज)",
+          measuredValue: "104",
+          unit: "mg/dL",
+          referenceRange: "70 - 99 mg/dL",
+          status: "high",
+          whatItMeasures: "रातभर के 8-12 घंटे के उपवास के बाद रक्त में शर्करा का स्तर मापता है।",
+          explanation: "सामान्य स्तर (70-99) से थोड़ा अधिक है; डॉक्टर से आहार और जीवनशैली पर चर्चा करें।"
+        },
+        {
+          testName: "Total Cholesterol (कुल कोलेस्ट्रॉल)",
+          measuredValue: "218",
+          unit: "mg/dL",
+          referenceRange: "125 - 200 mg/dL",
+          status: "high",
+          whatItMeasures: "रक्तप्रवाह में परिसंचारी सभी प्रकार के कोलेस्ट्रॉल की कुल मात्रा।",
+          explanation: "वांछनीय सीमा (<200) से थोड़ा अधिक है। हृदय स्वास्थ्य के लिए खान-पान में सुधार आवश्यक हो सकता है।"
+        },
+        {
+          testName: "HDL Cholesterol (अच्छा कोलेस्ट्रॉल)",
+          measuredValue: "54",
+          unit: "mg/dL",
+          referenceRange: "> 40 mg/dL",
+          status: "normal",
+          whatItMeasures: "हाई-डेंसिटी लिपोप्रोटीन जो अतिरिक्त कोलेस्ट्रॉल को वापस लिवर तक ले जाता है।",
+          explanation: "स्वस्थ और सुरक्षात्मक स्तर पर है।"
+        },
+        {
+          testName: "LDL Cholesterol (खराब कोलेस्ट्रॉल)",
+          measuredValue: "138",
+          unit: "mg/dL",
+          referenceRange: "< 100 mg/dL",
+          status: "high",
+          whatItMeasures: "लो-डेंसिटी लिपोप्रोटीन जो रक्त वाहिकाओं की दीवारों में जमा हो सकता है।",
+          explanation: "आदर्श सीमा (<100) से अधिक है। वसायुक्त भोजन कम करने की सलाह दी जाती है।"
+        },
+        {
+          testName: "Serum Creatinine (सीरम क्रिएटिनिन)",
+          measuredValue: "0.90",
+          unit: "mg/dL",
+          referenceRange: "0.70 - 1.30 mg/dL",
+          status: "normal",
+          whatItMeasures: "गुर्दों (किडनी) द्वारा छाना जाने वाला मांसपेशियों का अपशिष्ट पदार्थ।",
+          explanation: "किडनी के सामान्य और स्वस्थ कार्य को दर्शाता है।"
+        },
+        {
+          testName: "eGFR (गुर्दा निस्पंदन दर)",
+          measuredValue: "> 90",
+          unit: "mL/min",
+          referenceRange: "> 60 mL/min",
+          status: "normal",
+          whatItMeasures: "किडनी की संपूर्ण निस्पंदन क्षमता का मुख्य सूचकांक।",
+          explanation: "उत्कृष्ट स्तर, किडनी की कोई समस्या नहीं है।"
+        }
+      ],
+      highOrLowFindings: [
+        "फास्टिंग ब्लड ग्लूकोज (104 mg/dL): सामान्य सीमा (70-99) से थोड़ा अधिक।",
+        "कुल कोलेस्ट्रॉल (218 mg/dL): सामान्य सीमा (<200) से थोड़ा अधिक।",
+        "LDL खराब कोलेस्ट्रॉल (138 mg/dL): सामान्य सीमा (<100) से अधिक।"
+      ],
+      generalExplanations: [
+        "किडनी और लिवर से जुड़े सभी मुख्य परीक्षण पूरी तरह से सामान्य और स्वस्थ हैं।",
+        "ब्लड शुगर और एलडीएल कोलेस्ट्रॉल में मामूली वृद्धि जीवनशैली और संतुलित आहार सुधारने का अच्छा अवसर है।",
+        "प्रयोगशाला के परिणामों की पुष्टि हमेशा अपने व्यक्तिगत चिकित्सक से करवाएं।"
+      ],
+      questionsForDoctor: [
+        "क्या आप पिछले 3 महीनों की औसत शुगर जांचने के लिए HbA1c टेस्ट कराने की सलाह देंगे?",
+        "मेरे LDL कोलेस्ट्रॉल को नियंत्रित करने के लिए आहार में क्या बदलाव करने चाहिए?",
+        "मुझे यह जांच दोबारा कब करानी चाहिए?"
+      ],
+      disclaimer: "IMD Care सामान्य शैक्षिक मार्गदर्शन प्रदान करता है और यह कोई चिकित्सीय निदान नहीं है। प्रयोगशाला रिपोर्ट की व्याख्या हमेशा अपने डॉक्टर से करवाएं।",
+      isSyntheticSample: true
+    };
+  }
+
+  if (lang === "mr") {
+    return {
+      summary: "उपाशीपोटी घेतलेल्या रक्ताच्या नमुन्यावरून तयार केलेला कॉम्प्रीहेन्सिव्ह मेटाबॉलिक पॅनेल (CMP) आणि लिपिड पॅनेल अहवाल. हा रक्तातील साखर, कोलेस्टेरॉल, मूत्रपिंड (किडनी) आणि यकृताचे कार्य तपासतो.",
+      tests: [
+        {
+          testName: "Fasting Blood Glucose (उपाशीपोटी रक्तातील साखर)",
+          measuredValue: "104",
+          unit: "mg/dL",
+          referenceRange: "70 - 99 mg/dL",
+          status: "high",
+          whatItMeasures: "रात्रभरच्या उपाशीपोटी (८-१२ तास) रक्तातील साखरेचे प्रमाण मोजते.",
+          explanation: "सामान्य प्रमाणापेक्षा (७०-९९) किंचित जास्त आहे; डॉक्टरांशी आहाराविषयी चर्चा करा."
+        },
+        {
+          testName: "Total Cholesterol (एकूण कोलेस्टेरॉल)",
+          measuredValue: "218",
+          unit: "mg/dL",
+          referenceRange: "125 - 200 mg/dL",
+          status: "high",
+          whatItMeasures: "रक्तातील सर्व प्रकारच्या कोलेस्टेरॉलचे एकूण प्रमाण.",
+          explanation: "इष्टतम मर्यादेपेक्षा (<२००) किंचित जास्त आहे. हृदयाच्या आरोग्यासाठी आहाराकडे लक्ष द्या."
+        },
+        {
+          testName: "HDL Cholesterol (चांगले कोलेस्टेरॉल)",
+          measuredValue: "54",
+          unit: "mg/dL",
+          referenceRange: "> 40 mg/dL",
+          status: "normal",
+          whatItMeasures: "अतिरिक्त कोलेस्टेरॉल यकृताकडे परत नेणारे उपयुक्त कोलेस्टेरॉल.",
+          explanation: "हृदयाच्या आरोग्यासाठी उत्तम आणि सुरक्षित पातळीवर आहे."
+        },
+        {
+          testName: "LDL Cholesterol (हानिकारक कोलेस्टेरॉल)",
+          measuredValue: "138",
+          unit: "mg/dL",
+          referenceRange: "< 100 mg/dL",
+          status: "high",
+          whatItMeasures: "रक्तवाहिन्यांच्या भिंतींमध्ये जमा होऊ शकणारे कोलेस्टेरॉल.",
+          explanation: "इष्टतम मर्यादेपेक्षा (<१००) जास्त आहे. तेलकट पदार्थ कमी करण्याचा सल्ला दिला जातो."
+        },
+        {
+          testName: "Serum Creatinine (सीरम क्रिएटिनिन)",
+          measuredValue: "0.90",
+          unit: "mg/dL",
+          referenceRange: "0.70 - 1.30 mg/dL",
+          status: "normal",
+          whatItMeasures: "किडनीद्वारे गाळला जाणारा स्नायूंचा टाकाऊ घटक.",
+          explanation: "किडनीचे कार्य पूर्णपणे सामान्य आणि निरोगी असल्याचे दर्शवतो."
+        },
+        {
+          testName: "eGFR (किडनी गाळण क्षमता)",
+          measuredValue: "> 90",
+          unit: "mL/min",
+          referenceRange: "> 60 mL/min",
+          status: "normal",
+          whatItMeasures: "किडनीच्या एकूण कार्यक्षमतेचा प्रमुख निर्देशांक.",
+          explanation: "उत्कृष्ट पातळी, किडनीचे कार्य सुस्थितीत आहे."
+        }
+      ],
+      highOrLowFindings: [
+        "उपाशीपोटी साखर (104 mg/dL): सामान्य प्रमाणापेक्षा (७०-९९) किंचित जास्त.",
+        "एकूण कोलेस्टेरॉल (218 mg/dL): सामान्य प्रमाणापेक्षा (<२००) किंचित जास्त.",
+        "LDL हानिकारक कोलेस्टेरॉल (138 mg/dL): सामान्य प्रमाणापेक्षा (<१००) जास्त."
+      ],
+      generalExplanations: [
+        "किडनी व यकृताशी संबंधित सर्व तपासण्या पूर्णपणे सामान्य व निरोगी आहेत.",
+        "साखर आणि कोलेस्टेरॉलमधील किंचित वाढ योग्य व्यायाम आणि संतुलित आहाराने नियंत्रित करता येऊ शकते.",
+        "लॅब चाचण्यांचा अंतिम निष्कर्ष नेहमी आपल्या डॉक्टरांकडूनच समजून घ्यावा."
+      ],
+      questionsForDoctor: [
+        "गेल्या ३ महिन्यांची सरासरी साखर तपासण्यासाठी HbA1c चाचणी करणे योग्य ठरेल का?",
+        "LDL कोलेस्टेरॉल नियंत्रित करण्यासाठी आहारात कोणते बदल करावेत?",
+        "मला ही चाचणी पुन्हा कधी करावी लागेल?"
+      ],
+      disclaimer: "IMD Care सामान्य शैक्षणिक माहिती प्रदान करते आणि हे वैद्यकीय निदान किंवा सल्ला नाही. लॅब अहवालाचे अंतिम विश्लेषण नेहमी डॉक्टरांकडूनच करून घ्यावे.",
+      isSyntheticSample: true
+    };
+  }
+
   return {
     summary: "Comprehensive Metabolic Panel (CMP) and Lipid Panel from fasting blood specimen. Evaluates blood glucose regulation, cardiovascular cholesterol markers, kidney filtration, and liver enzymes.",
     tests: [
@@ -160,9 +318,9 @@ function getSyntheticCmpAnalysis(): ReportSimplifierResponse {
 
 reportSimplifierRouter.post("/", async (req: Request, res: Response) => {
   try {
-    const { reportText, fileBase64, mimeType, fileName, isSample } = req.body;
+    const { reportText, fileBase64, mimeType, fileName, isSample, language = "en" } = req.body;
 
-    if (!reportText && !fileBase64) {
+    if (!reportText && !fileBase64 && !isSample) {
       return res.status(400).json({ error: "Please provide either report text or an uploaded laboratory file." });
     }
 
@@ -181,11 +339,19 @@ reportSimplifierRouter.post("/", async (req: Request, res: Response) => {
 
     // If this is the synthetic sample report or Gemini key is missing, return high-fidelity synthetic report
     if (isSample || !hasGeminiKey()) {
-      return res.json(getSyntheticCmpAnalysis());
+      return res.json(getSyntheticCmpAnalysis(language));
     }
+
+    const langDirective =
+      language === "hi"
+        ? "Respond in clear, accessible Hindi (हिंदी) using Devanagari script for all explanations and descriptions. Standard test names and units can remain in English/Latin with Hindi explanation."
+        : language === "mr"
+        ? "Respond in clear, accessible Marathi (मराठी) using Devanagari script for all explanations and descriptions. Standard test names and units can remain in English/Latin with Marathi explanation."
+        : "Respond in plain, accessible English.";
 
     const instructions = `You are an expert laboratory report educator for IMD Care.
 Your role is to explain medical laboratory reports in clear, calm, and simple everyday language.
+LANGUAGE REQUIREMENT: ${langDirective}
 
 MANDATORY MEDICAL SAFEGUARDS:
 1. NEVER invent or hallucinate laboratory values. Only extract what is clearly visible.
@@ -195,7 +361,7 @@ MANDATORY MEDICAL SAFEGUARDS:
 5. Provide actionable, respectful questions the patient can ask their doctor.
 6. Return strictly valid JSON adhering to this exact schema:
 {
-  "summary": "Brief 2-3 sentence overview.",
+  "summary": "Brief 2-3 sentence overview in the requested language.",
   "tests": [
     {
       "testName": "Name of the test",
@@ -203,13 +369,13 @@ MANDATORY MEDICAL SAFEGUARDS:
       "unit": "Unit as printed",
       "referenceRange": "Reference range as printed",
       "status": "normal" | "high" | "low" | "abnormal" | "inconclusive",
-      "whatItMeasures": "1-sentence explanation of what this marker measures",
-      "explanation": "Simple explanation of this finding in context"
+      "whatItMeasures": "1-sentence explanation of what this marker measures in the requested language",
+      "explanation": "Simple explanation of this finding in context in the requested language"
     }
   ],
-  "highOrLowFindings": ["Summary of out-of-range tests"],
-  "generalExplanations": ["General context on findings"],
-  "questionsForDoctor": ["3-5 clear questions to discuss with physician"],
+  "highOrLowFindings": ["Summary of out-of-range tests in requested language"],
+  "generalExplanations": ["General context on findings in requested language"],
+  "questionsForDoctor": ["3-5 clear questions in requested language to discuss with physician"],
   "unreadableNotes": null
 }`;
 
@@ -256,21 +422,28 @@ MANDATORY MEDICAL SAFEGUARDS:
       const parsed = JSON.parse(raw);
 
       return res.json({
-        summary: parsed.summary || "Summary of laboratory findings.",
+        summary: parsed.summary || (language === "hi" ? "प्रयोगशाला निष्कर्षों का सारांश।" : language === "mr" ? "लॅब चाचण्यांचा सारांश." : "Summary of laboratory findings."),
         tests: Array.isArray(parsed.tests) ? parsed.tests : [],
         highOrLowFindings: Array.isArray(parsed.highOrLowFindings) ? parsed.highOrLowFindings : [],
         generalExplanations: Array.isArray(parsed.generalExplanations) ? parsed.generalExplanations : [],
         questionsForDoctor: Array.isArray(parsed.questionsForDoctor) ? parsed.questionsForDoctor : [
-          "What do these findings mean for my day-to-day health?",
-          "Do I need any follow-up tests or lifestyle adjustments?"
+          language === "hi"
+            ? "इन रिपोर्टों का मेरे स्वास्थ्य पर क्या प्रभाव पड़ता है?"
+            : language === "mr"
+            ? "या अहवालाचा माझ्या आरोग्यावर काय परिणाम होईल?"
+            : "What do these findings mean for my day-to-day health?"
         ],
         unreadableNotes: parsed.unreadableNotes || undefined,
-        disclaimer: "IMD Care provides general educational explanations and does not constitute medical diagnosis or advice. Lab results must always be interpreted by the prescribing physician.",
+        disclaimer: language === "hi"
+          ? "IMD Care सामान्य शैक्षिक मार्गदर्शन प्रदान करता है और यह कोई चिकित्सीय निदान नहीं है। प्रयोगशाला रिपोर्ट की व्याख्या हमेशा अपने डॉक्टर से करवाएं।"
+          : language === "mr"
+          ? "IMD Care सामान्य शैक्षणिक माहिती प्रदान करते आणि हे वैद्यकीय निदान किंवा सल्ला नाही. लॅब अहवालाचे अंतिम विश्लेषण नेहमी डॉक्टरांकडूनच करून घ्यावे."
+          : "IMD Care provides general educational explanations and does not constitute medical diagnosis or advice. Lab results must always be interpreted by the prescribing physician.",
         isSyntheticSample: false,
       });
     } catch (apiErr: any) {
       console.warn("Gemini report simplification error or timeout; providing structured analysis fallback:", apiErr?.message);
-      return res.json(getSyntheticCmpAnalysis());
+      return res.json(getSyntheticCmpAnalysis(language));
     }
   } catch (error: any) {
     console.error("Report Simplifier API Error:", error?.message || error);

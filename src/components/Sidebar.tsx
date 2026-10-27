@@ -10,6 +10,7 @@ import {
   AlertCircle,
   ShieldCheck
 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext.tsx";
 
 interface SidebarProps {
   onOpenEmergency: () => void;
@@ -17,13 +18,15 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ onOpenEmergency, onCloseMobile }) => {
+  const { t } = useLanguage();
+
   const navItems = [
-    { to: "/", label: "Dashboard", icon: LayoutDashboard },
-    { to: "/assistant", label: "AI Health Assistant", icon: MessageSquareHeart },
-    { to: "/symptoms", label: "Symptom Guidance", icon: Activity },
-    { to: "/reports", label: "Medical Reports", icon: FileSpreadsheet },
-    { to: "/preventive", label: "Preventive Healthcare", icon: HeartPulse },
-    { to: "/settings", label: "Settings", icon: Settings },
+    { to: "/", label: t("dashboard"), icon: LayoutDashboard },
+    { to: "/assistant", label: t("assistant"), icon: MessageSquareHeart },
+    { to: "/symptoms", label: t("symptoms"), icon: Activity },
+    { to: "/reports", label: t("reports"), icon: FileSpreadsheet },
+    { to: "/preventive", label: t("preventive"), icon: HeartPulse },
+    { to: "/settings", label: t("settings"), icon: Settings },
   ];
 
   return (
@@ -36,13 +39,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenEmergency, onCloseMobile
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-lg tracking-tight text-[#172B4D]">IMD Care</span>
+              <span className="font-bold text-lg tracking-tight text-[#172B4D]">{t("appName")}</span>
               <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-blue-50 text-[#2583F5] border border-blue-100">
                 AI Tech
               </span>
             </div>
             <p className="text-xs text-[#718096] font-medium leading-tight">
-              Your health, made easier.
+              {t("tagline")}
             </p>
           </div>
         </div>
@@ -79,15 +82,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenEmergency, onCloseMobile
       <div className="p-4 border-t border-[#E5EDF5] space-y-2 bg-[#F6FAFE]/60">
         <button
           onClick={onOpenEmergency}
-          className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 hover:bg-rose-100 transition-colors cursor-pointer"
           title="Emergency Help & Crisis Contacts"
         >
           <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
-          <span>Emergency Hotlines</span>
+          <span>{t("emergencyHotlines")}</span>
         </button>
 
         <p className="text-[11px] text-[#718096] leading-tight text-center px-1">
-          Informational aid only. Not a substitute for professional clinical advice.
+          {t("informationalAid")}
         </p>
       </div>
     </aside>
