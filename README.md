@@ -8,9 +8,12 @@
 ## 1. Overview
 **IMD Care** is a full-stack, AI-powered healthcare education and wellness management platform built to bridge the gap between complex health data and patient understanding. Designed under strict medical safety principles and ethical AI governance, IMD Care delivers:
 - **AI Health Assistant**: Conversational health education powered by Google's latest Gemini models via the official `@google/genai` TypeScript SDK.
+- **Multilingual Healthcare Support**: Complete trilingual localization across English, Hindi (हिंदी), and Marathi (मराठी) with instantaneous language switching.
 - **Smart Symptom Guidance**: Multi-factor symptom evaluation with **instant deterministic safety checks** for acute emergencies prior to any AI processing.
 - **Medical Report Simplifier**: Plain-language breakdown of laboratory results, reference ranges, and abnormal markers, paired with prepared doctor discussion points.
 - **Preventive Healthcare**: Daily hydration, sleep, and physical activity trackers, coupled with persistent medication and clinical appointment reminders.
+- **Demo User Sign-in & Personas**: Multi-role switcher allowing testing as a Patient, Caregiver, or Clinical Researcher with persistent active session context.
+- **Live System Diagnostics**: In-app diagnostic inspection suite under Settings to probe API latency, connectivity status, and environment health.
 - **Privacy & Safety Center**: Zero permanent chat retention, backend-only secret isolation, and direct emergency hotline directory.
 
 ---
@@ -160,7 +163,20 @@ npm run build; npm run start
    - **Reminders**: Create, edit, mark complete, and delete medication schedules and clinical visits with full backend persistence.
    - **Wellness Tips**: Switch categories (*sleep, hydration, movement, stress*) to fetch fresh AI suggestions.
 
-6. **Safety & Settings**:
+6. **Multilingual & Localization**:
+   - Switch language at any time via the top header dropdown between **English**, **Hindi (हिंदी)**, and **Marathi (मराठी)**.
+   - All navigation items, disclaimer banners, symptom triage labels, and emergency alerts render in the selected language.
+
+7. **Sign-In / Demo Personas**:
+   - Click the profile avatar or "Sign In" button in the top navigation.
+   - Switch between **Dr. Aarav Sharma (Patient)**, **Sunita Patel (Caregiver)**, or **Rohan Deshmukh (Medical Student)** to test role-based presentation.
+
+8. **Live Diagnostics & Diagnostics Suite**:
+   - Open **Settings** -> **System Diagnostics**.
+   - Review live backend server latency, Gemini API connectivity, model name resolution, and memory usage.
+   - Use the **Export Full Archive** button to trigger `/api/export-archive` for instant offline backup.
+
+9. **Safety & Settings**:
    - Verify live API connectivity via `/api/health`.
    - Clear local cached demonstration data with one click.
    - Access the complete Emergency Hotlines Directory (911, 112, 988, Poison Control).
