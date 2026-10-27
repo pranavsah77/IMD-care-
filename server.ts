@@ -47,6 +47,19 @@ app.use("/api/reminders", remindersRouter);
 app.use("/api/wellness-tips", wellnessTipsRouter);
 app.use("/api/diagnostics", diagnosticsRouter);
 
+// Export Archive Route
+app.get("/api/export-archive", (_req: Request, res: Response) => {
+  const archivePath = "/tmp/imd-care-source.tar.gz";
+  res.download(archivePath, "imd-care-source.tar.gz", (err) => {
+    if (err) {
+      console.error("Archive download error:", err);
+      if (!res.headersSent) {
+        res.status(500).json({ error: "Could not generate or download source archive." });
+      }
+    }
+  });
+});
+
 // Global Error Handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error("Internal Server Error:", err?.message || err);
