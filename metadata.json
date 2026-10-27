@@ -1,0 +1,6 @@
+{
+  "name": "IMD Care",
+  "description": "Smart AI-powered healthcare platform providing responsible symptom guidance, medical report simplification, AI health assistance, and preventive wellness tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
